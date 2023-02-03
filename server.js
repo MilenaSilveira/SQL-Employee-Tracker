@@ -1,4 +1,5 @@
-const { default: inquirer } = require('inquirer');
+const inquirer = require('inquirer');
+const express = require ('express');
 const db = require('./db/index');
 
 // init();
@@ -9,7 +10,7 @@ const db = require('./db/index');
 
 
 
-function loadMainPrompts = () => {
+function loadMainPrompts() {
     inquirer.prompt([
     {
         type: 'list',
@@ -20,13 +21,43 @@ function loadMainPrompts = () => {
             'View all Roles',
             'View all Employees',
             'Add a Department',
-            'Add a Employee',
-            'Update all Departments',
-            'Update employee information',
-            'Exit'
+            'Add a Role',
+            'Add an Employee',
+            'Update an Employee Role',
+            'Quit'
         ]
     }
     ])
+
+    .then((answers) => {
+        const {choices} = answers;
+
+        if (choices === 'View all Departments'){
+            viewDepartments();
+        }
+        if (choices === 'View all Roles'){
+            viewRoles();
+        }
+        if (choices === 'View all Employees'){
+            viewEmployees();
+        }
+        if (choices === 'Add a Department'){
+            addDepartment();
+        }
+        if (choices === 'Add a Role'){
+            addRole();
+        }
+        if (choices === 'Add an Employee'){
+        addEmployee();
+        }
+        
+        if (choices === 'Update an Employee Role'){
+            updateEmployeeRole()
+        }
+        if (choices === 'Quit'){
+            quit();
+            }
+    })
 
 }
 
