@@ -22,7 +22,7 @@ class DB {
                 LEFT JOIN roles
                 ON roles.id = employees.role_id
                 LEFT JOIN departments
-                ON departments.id = roles.department_id`;
+                ON departments.id = roles.department_id;`;
 
         return this.con.promise().query(sql);
     };
@@ -36,27 +36,52 @@ class DB {
         roles.salary AS 'Salary'
         FROM roles
         LEFT JOIN departments
-            ON roles.department_id = departments.id
+            ON roles.department_id = departments.id;
         `;
     return this.con.promise().query(sql);
     };
 
-    //create new Employee
+    findAllDepartments(){
+        const sql = `SELECT
+            departments.id,departments.name AS "Department Name" FROM departments;
+        ` ;
+    return this.con.promise().query(sql);
+    };
+
+
+    //Add new Employee
     addEmployee(first_name, last_name, role_id, manager_id) {
         const sql = `INSERT INTO employees(first_name,last_name,role_id,manager_id)
     VALUES (?,?,?,?);`;
         return this.con.promise().query(sql, [first_name, last_name, role_id, manager_id]);
+    };
+   //Add new role
+    addRole(title, salary, department_id) {
+            const sql = `INSERT INTO roles(title,salary,department_id)
+            VALUES (?,?,?);`;
+            return this.con.promise().query(sql, [title, salary, department_id]);
+        
+          };
+
+    addDepartment(name) {
+            const sql = `INSERT INTO departments(name)
+            VALUES (?);`;
+            return this.con.promise().query(sql, [name]);
+        
+          };      
+
+
 
 
         //update an employee role
 
-        //view all roles
+      
 
-        //Add new role
+       
 
         //view all departments
 
-        // add new department
+       
 
 
 
