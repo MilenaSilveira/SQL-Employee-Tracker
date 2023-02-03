@@ -29,42 +29,43 @@ function loadMainPrompts() {
     }
     ])
 
-    .then((answers) => {
-        const {choices} = answers;
-
-        if (choices === 'View all Departments'){
+    .then((input) => {
+       switch (input.loadMainPrompts) {
+        case 'View all Departments':
             viewDepartments();
-        }
-        if (choices === 'View all Roles'){
+            break;
+            case 'View all Roles':
             viewRoles();
-        }
-        if (choices === 'View all Employees'){
+            break;
+            case 'View all Employees':
             viewEmployees();
-        }
-        if (choices === 'Add a Department'){
+            break;
+            case 'Add a Department':
             addDepartment();
-        }
-        if (choices === 'Add a Role'){
+            break;
+            case 'Add a Role':
             addRole();
-        }
-        if (choices === 'Add an Employee'){
-        addEmployee();
-        }
-        
-        if (choices === 'Update an Employee Role'){
-            updateEmployeeRole()
-        }
-        if (choices === 'Quit'){
+            break;
+            case 'Add an Employee':
+            addEmployee();
+            break;
+            case 'Update an Employee Role':
+            updateEmployeeRole();
+            break;
+            case 'Quit':
             quit();
-            }
-    })
+            break;
+       }
 
-}
+})}
 
-
+//Show Employee details.
 
 function viewEmployees(){
-
+    console.log('Employee list: ');
+    db.query(
+        
+    )
 }
 
 function updateEmployeeRole(){
