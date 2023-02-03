@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
-const express = require ('express');
+// const express = require ('express');
 const db = require('./db/index');
+require('console.table');
 
-loadMainPrompts();
 
 
 function loadMainPrompts() {
@@ -54,17 +54,49 @@ function loadMainPrompts() {
 
 })}
 
+
+function viewDepartments(){
+    db.findAllDepartments()
+
+    loadMainPrompts()
+}
+
+function viewRoles(){
+    db.findAllRoles()
+
+    loadMainPrompts()
+}
 //Show Employee details.
 
 function viewEmployees(){
+    db.findAllEmployees()
     //goes to db that you required and uses your find all employees method
     //.then console.table results
     //call the main prompt
-    console.log('Employee list: ');
-    db.query()
+    loadMainPrompts()
+}
+
+function addDepartment(){
+    db.addDepartment()
+
+
+    loadMainPrompts()
+}
+
+function addRole(){
+    db.addRole().then
+
+    loadMainPrompts()
+}
+
+function addEmployee(){
+    db.addEmployee()
+
+    loadMainPrompts()
 }
 
 function updateEmployeeRole(){
+    db.updateEmployeeRole()
 //find all employees
 // put those employees into inquirer prompt
 //set up a variable for the employee that the user selects 
@@ -72,25 +104,8 @@ function updateEmployeeRole(){
 // put those into a inquirer prompt
 //.then - use your update employee method, passing in the employee they selected, 
 //and the role they choose to assign to them
+    loadMainPrompts()
 }
-
-//view all roles func
-
-//add a role 
-  //
-  //
-
-  // view all dept func
-
-  // add dpt func
-
-  //add employee func 
-
-
-
-
-
-
 
 
 function quit() {

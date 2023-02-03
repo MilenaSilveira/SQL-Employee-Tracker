@@ -24,7 +24,7 @@ class DB {
                 LEFT JOIN departments
                 ON departments.id = roles.department_id;`;
 
-        return this.con.promise().query(sql);
+        return this.connection.promise().query(sql);
     };
 
     findAllRoles() {
@@ -38,14 +38,14 @@ class DB {
         LEFT JOIN departments
             ON roles.department_id = departments.id;
         `;
-    return this.con.promise().query(sql);
+    return this.connection.promise().query(sql);
     };
 
     findAllDepartments(){
         const sql = `SELECT
             departments.id,departments.name AS "Department Name" FROM departments;
         ` ;
-    return this.con.promise().query(sql);
+    return this.connection.promise().query(sql);
     };
 
 
@@ -53,52 +53,32 @@ class DB {
     addEmployee(first_name, last_name, role_id, manager_id) {
         const sql = `INSERT INTO employees(first_name,last_name,role_id,manager_id)
     VALUES (?,?,?,?);`;
-        return this.con.promise().query(sql, [first_name, last_name, role_id, manager_id]);
+        return this.connection.promise().query(sql, [first_name, last_name, role_id, manager_id]);
     };
    //Add new role
     addRole(title, salary, department_id) {
             const sql = `INSERT INTO roles(title,salary,department_id)
             VALUES (?,?,?);`;
-            return this.con.promise().query(sql, [title, salary, department_id]);
+            return this.connection.promise().query(sql, [title, salary, department_id]);
         
           };
-
+          
     addDepartment(name) {
             const sql = `INSERT INTO departments(name)
             VALUES (?);`;
-            return this.con.promise().query(sql, [name]);
+            return this.connection.promise().query(sql, [name]);
         
           };      
 
 
-
-
-        //update an employee role
-
-      
-
-       
-
-        //view all departments
-
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    updateEmployeeRole(role_id, id) {
+            const sql = `UPDATE employees
+            SET role_id=?
+            WHERE id=?;`;
+            return this.connection.promise().query(sql, [role_id, id]);
+        };
     }
-    }
+
+
+
 module.exports = new DB(connection);
