@@ -1,9 +1,14 @@
 const inquirer = require('inquirer');
-// const express = require ('express');
+const express = require ('express');
 const db = require('./db/index');
-require('console.table');
 
+const conTable = require('console.table');
 
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 function loadMainPrompts() {
     inquirer.prompt([
@@ -47,7 +52,7 @@ function loadMainPrompts() {
             case 'Update an Employee Role': 
             updateEmployeeRole();
             break;
-            case 'Quit': 
+            case 'Quit':
             quit();
             break;
        }
@@ -56,25 +61,26 @@ function loadMainPrompts() {
 
 
 function viewDepartments(){
-    db.findAllDepartments()
+    db.findAllDepartments().then
 
     loadMainPrompts()
 }
 
 function viewRoles(){
-    db.findAllRoles()
+    db.findAllRoles().then
 
     loadMainPrompts()
 }
 //Show Employee details.
 
 function viewEmployees(){
-    db.findAllEmployees()
+    db.findAllEmployees().then
     //goes to db that you required and uses your find all employees method
     //.then console.table results
     //call the main prompt
     loadMainPrompts()
 }
+
 
 function addDepartment(){
     db.addDepartment()
