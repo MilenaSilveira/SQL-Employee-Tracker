@@ -24,5 +24,5 @@ VALUES ("John","Smith",1),
     ("Crystal","Sanders",4),
     ("Matt","Miller",2),
     ("Jane","Jones",2),
-    ("Juan","Garcia",3);
+    ("Juan","Garcia",3),
     ("Dom","Brown",4);
