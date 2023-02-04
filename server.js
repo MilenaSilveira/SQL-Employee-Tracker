@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
-const db = require('./db/index');
+// const db = require('./db/index');
 const conTable = require('console.table');
+const inport = require('./db/connection');
+
 
 const loadMainPrompts = [
    
@@ -119,21 +121,10 @@ function showEmployees() {
       });
   }
 
-function addRole(){
-    db.addRole().then
-    inquirer.prompt([
-        {
-        type: 'input',
-        name: 'roleName',
-        message: "Please enter Role: ",
-    }
-    ])
-   }
-
 function addRole() {
     db.query(`SELECT * FROM departments`, function (err, response) {
       
-      let roleOptions = results.map((department) => {
+      let dptOptions = results.map((department) => {
         return { name: department.name, value: department.id };
       });
       
@@ -141,7 +132,7 @@ function addRole() {
         .prompt([
           {
             type: "input",
-            name: "roleInput",
+            name: "enterRole",
             message: "Please enter a new Role: ",
           },
           {
@@ -153,35 +144,101 @@ function addRole() {
             type: "list",
             name: "deptOptions",
             message: "Please select a a Department for this Role: ",
-            choices: roleOptions,
+            choices: dptOptions,
           },
         ])
         .then((choices) => {
-          // console.log(responses);
-          db.query(`INSERT INTO roles (title, salary, department_id)
-          VALUES ('${choices.roleAddInput}', '${choices.roleSalaryInput}', '${choices.deptRoleList}')`);
-          loadOptions();
+        db.query(`INSERT INTO role (title, salary, department_id)
+        VALUES ('${choices.enterRole}', '${choices.roleSalary}', '${choices.deptOptions}')`);
+        loadOptions();
         });
     });
   }
   
 
-function updateEmployeeRole(){
-    db.updateEmployeeRole()
-//find all employees
-// put those employees into inquirer prompt
-//set up a variable for the employee that the user selects 
-// find all roles
-// put those into a inquirer prompt
-//.then - use your update employee method, passing in the employee they selected, 
-//and the role they choose to assign to them
- 
-}
+  function addEmployee() {
+    db.query(`SELECT * FROM role`, function (err, response) {
+      db.query(`SELECT * FROM employee`, function (err, responses) {
 
+        let roleOptions = response.map((role) => {
+          return { name: role.title, value: role.id };
+        });
+        
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "enterFirst",
+              message: "Please enter employees first name: ",
+            },
+            {
+              type: "input",
+              name: "enterLast",
+              message: "Please enter employee last name: ",
+            },
+            {
+              type: "list",
+              name: "addRole",
+              message: "Please enter employee Role: ",
+              choices: roleOptions,
+            },
+           
+          ])
+          .then((result) => {
+           
+            db.query(`INSERT INTO employee (first_name, last_name, role_id)
+            VALUES ('${result.enterFirst}', '${result.enterLast}', '${result.addRole}'`);
+            loadOptions();
+          });
+      });
+    });
+  }
+
+  function updateEmployeeRole() {
+    db.query(`SELECT * FROM employee`, function (err, response) {
+      db.query(`SELECT * FROM role`, function (err, responses) {
+        let empOptions = response.map((employee) => {
+          return {
+            name: employee.first_name.concat(" " + employee.last_name),
+            value: employee.id,
+          };
+        });
+  
+        let chooseRole = responses.map((role) => {
+          return { name: role.title, value: role.id };
+        });
+        inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "roleUpdate",
+              message: "Please select the Role you would like to update: ",
+              choices: empOptions,
+            },
+            {
+              type: "list",
+              name: "roleChoice",
+              message: "Please choose a Role: ",
+              choices: chooseRole,
+            },
+            
+          ])
+          .then((result) => {
+            db.query(`
+            UPDATE employee
+            SET role_id = '${result.chooseRole}'
+            WHERE id = '${result.roleUpdate}'
+            `);
+            // console.log(response);
+            loadOptions();
+          });
+      });
+    });
+  }
 
 function quit() {
     console.log('Goodbye!');
     process.exit();
 }
 
-loadMainPrompts();
+// loadMainPrompts();
