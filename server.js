@@ -28,15 +28,15 @@ const loadMainPrompts = [
 
                 case 'View all Departments':
                     console.log('working')
-                    viewDepartments();
+                    showDepartments();
                     break;
                     
                     case 'View all Roles': 
-                    viewRoles();
+                    showRoles();
                     break;
         
                     case 'View all Employees': 
-                    viewEmployees();
+                    showEmployees();
                     break;
         
                     case 'Add a Department': 
@@ -63,35 +63,45 @@ const loadMainPrompts = [
       };
 
 
-function viewDepartments(){
+function showDepartments() {
+    db.query(`SELECT * FROM departments`, function (err, response) {
+          console.table(response);
+          loadOptions();
+        });
+      }
 
+function showRoles(){
+    db.query(
+        `
+  SELECT
+  role.title AS 'Job Title', role.id AS 'Role ID', department.name AS "Department Name", role.salary AS 'Salary'
+  FROM role
+  LEFT JOIN department
+      ON role.department_id = departments.id
+  `, function (err, response) {
+    console.table(response);
+    loadOptions();
+  }
+    )
+};
 
-    // viewDepartments = () => {
-    //     db.query('SELECT * FROM department', function (err, rows) {
-    //         if(err) throw err
-    //         console.table(rows);
-    //         promptUser();
-    //       });
-    // }
-    
-}
-
-function viewRoles(){
-    db.findAllRoles()
-    .then(console.table)
-
-   
-}
-
-
-function viewEmployees(){
-    db.findAllEmployees()
-    .then(console.table)
-    //goes to db that you required and uses your find all employees method
-    //.then console.table results
-    //call the main prompt
-   
-}
+function showEmployees() {
+    db.query(
+      `
+      SELECT employee.id AS 'Employee ID', employee.first_name AS "First Name", employee.last_name AS "Last Name", 
+      role.title AS "Job Title", department.name AS "Department", role.salary AS "Salary", employee.manager_id AS "Manager"
+      FROM employee
+      LEFT JOIN role
+          ON role.id = employee.role_id
+      LEFT JOIN department
+          ON department.id = role.department_id
+      `,
+      function (err, response) {
+        console.table(response);
+        loadOptions();
+      }
+    );
+  }
 
 
 function addDept(){
