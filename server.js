@@ -40,7 +40,7 @@ const loadMainPrompts = [
                     break;
         
                     case 'Add a Department': 
-                    addDept();
+                    addDepartment();
                     break;
         
                     case 'Add a Role': 
@@ -103,21 +103,21 @@ function showEmployees() {
     );
   }
 
-
-function addDept(){
-    db.addDepartment()
-    .then(result =>{
-        inquirer.prompt([
-            {
-            type: 'input',
-            name: 'deptName',
-            message: "Please enter the Department name: ",
-        }
-        ])
-    }
-   
-    )
-}
+  function addDepartment() {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "dptName",
+          message: "Please enter new Department: ",
+        },
+      ])
+      .then((dptResponse) => {
+        db.query(`INSERT INTO departments (name)
+          VALUES ('${dptResponse.dptName}')`);
+          loadOptions();
+      });
+  }
 
 function addRole(){
     db.addRole().then
@@ -128,20 +128,43 @@ function addRole(){
         message: "Please enter Role: ",
     }
     ])
-   
-}
+   }
 
-function addEmployee(){
-    db.addEmployee()
-    inquirer.prompt([
-        {
-        type: 'input',
-        name: 'roleName',
-        message: "Please enter Role: ",
-    }
-    ])
+function addRole() {
+    db.query(`SELECT * FROM departments`, function (err, response) {
+      
+      let roleOptions = results.map((department) => {
+        return { name: department.name, value: department.id };
+      });
+      
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "roleInput",
+            message: "Please enter a new Role: ",
+          },
+          {
+            type: "input",
+            name: "roleSalary",
+            message: "Please enter the salary for this Role: ",
+          },
+          {
+            type: "list",
+            name: "deptOptions",
+            message: "Please select a a Department for this Role: ",
+            choices: roleOptions,
+          },
+        ])
+        .then((choices) => {
+          // console.log(responses);
+          db.query(`INSERT INTO roles (title, salary, department_id)
+          VALUES ('${choices.roleAddInput}', '${choices.roleSalaryInput}', '${choices.deptRoleList}')`);
+          loadOptions();
+        });
+    });
+  }
   
-}
 
 function updateEmployeeRole(){
     db.updateEmployeeRole()
