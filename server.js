@@ -1,14 +1,6 @@
 const inquirer = require('inquirer');
-const express = require ('express');
 const db = require('./db/index');
-
-const conTable = require('console.table');
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+require('console.table');
 
 function loadMainPrompts() {
     inquirer.prompt([
@@ -34,24 +26,31 @@ function loadMainPrompts() {
         case 'View all Departments':
             viewDepartments();
             break;
+            
             case 'View all Roles': 
             viewRoles();
             break;
+
             case 'View all Employees': 
             viewEmployees();
             break;
+
             case 'Add a Department': 
-            addDepartment();
+            addDept();
             break;
+
             case 'Add a Role': 
             addRole();
             break;
+
             case 'Add an Employee': 
             addEmployee();
             break;
+
             case 'Update an Employee Role': 
             updateEmployeeRole();
             break;
+            
             case 'Quit':
             quit();
             break;
@@ -59,22 +58,36 @@ function loadMainPrompts() {
 
 })}
 
+// const viewDept = new DB(connection);
+
+// db.findAllEmployees()
+//   .then(result => {
+//     // Do something with the result
+//     console.log(result);
+//   })
+//   .catch(error => {
+//     // Handle the error
+//     console.error(error);
+//   });
 
 function viewDepartments(){
-    db.findAllDepartments().then
+    db.findAllDepartments()
+    .then(console.table)
 
     loadMainPrompts()
 }
 
 function viewRoles(){
-    db.findAllRoles().then
+    db.findAllRoles()
+    .then(console.table)
 
     loadMainPrompts()
 }
-//Show Employee details.
+
 
 function viewEmployees(){
-    db.findAllEmployees().then
+    db.findAllEmployees()
+    .then(console.table)
     //goes to db that you required and uses your find all employees method
     //.then console.table results
     //call the main prompt
@@ -82,8 +95,19 @@ function viewEmployees(){
 }
 
 
-function addDepartment(){
+function addDept(){
     db.addDepartment()
+    .then(result =>{
+        inquirer.prompt([
+            {
+            type: 'input',
+            name: 'deptName',
+            message: "Please enter the Department name: ",
+        }
+        ])
+    }
+   
+    )
 
 
     loadMainPrompts()

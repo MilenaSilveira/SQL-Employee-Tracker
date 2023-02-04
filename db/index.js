@@ -51,9 +51,9 @@ class DB {
 
     //Add new Employee
     addEmployee(first_name, last_name, role_id, manager_id) {
-        const sql = `INSERT INTO employees(first_name,last_name,role_id,manager_id)
-    VALUES (?,?,?,?);`;
-        return this.connection.promise().query(sql, [first_name, last_name, role_id, manager_id]);
+            const sql = `INSERT INTO employees(first_name,last_name,role_id,manager_id)
+            VALUES (?,?,?,?);`;
+            return this.connection.promise().query(sql, [first_name, last_name, role_id, manager_id]);
     };
    //Add new role
     addRole(title, salary, department_id) {
@@ -62,7 +62,7 @@ class DB {
             return this.connection.promise().query(sql, [title, salary, department_id]);
         
           };
-          
+     //Add Department     
     addDepartment(name) {
             const sql = `INSERT INTO departments(name)
             VALUES (?);`;
@@ -70,14 +70,14 @@ class DB {
         
           };      
 
-
+    //Update Employee Role
     updateEmployeeRole(role_id, id) {
             const sql = `UPDATE employees
             SET role_id=?
             WHERE id=?;`;
             return this.connection.promise().query(sql, [role_id, id]);
         };
-    }
+    };
 
 
 
