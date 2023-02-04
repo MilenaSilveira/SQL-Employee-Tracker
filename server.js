@@ -6,6 +6,7 @@ const db = require('./db/connection');
 
 const loadMainPrompts = [
 
+  
   {
     type: 'list',
     name: 'mainEmployeeOptions',
